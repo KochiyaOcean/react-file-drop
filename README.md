@@ -52,6 +52,9 @@ Callback when the user stops dragging over the ``frame``
 ##### onFrameDrop - function(event)
 Callback when the user drops files *anywhere* over the ``frame``
 
+##### onFrameDrop - function(event)
+Accept only specified mime types. Must be a valid MIME type, for example `application/pdf`, `image/*`, `audio/aiff, audio/midi`
+
 ## Styling
 By default, the component comes with no styles. You can grab the [demo CSS](http://sarink.github.io/react-file-drop/demo/file-drop.css) to get you started.
 
@@ -64,5 +67,8 @@ This is the target the user has to drag their files to. It will be inserted into
 ##### .file-drop > .file-drop-target.file-drop-dragging-over-frame
 The ``file-drop-dragging-over-frame`` class will be added to the ``file-drop-target`` whenever the user begins dragging a file over the ``frame``, and it will be removed when they leave
 
-##### .file-drop > .file-drop-target.file-drop-dragging-over-target
-The ``file-drop-dragging-over-target`` class will be added to the ``file-drop-target`` whenever the user begins dragging a file over the ``file-drop-target`` div, and it will be removed when they leave
+##### .file-drop > .file-drop-target.file-drop-dragging-over-target-accept
+The ``file-drop-dragging-over-target`` class will be added to the ``file-drop-target`` whenever the user begins dragging a accepted file over the ``file-drop-target`` div, and it will be removed when they leave
+
+##### .file-drop > .file-drop-target.file-drop-dragging-over-target-reject
+The ``file-drop-dragging-over-target`` class will be added to the ``file-drop-target`` whenever the user begins dragging a rejected file over the ``file-drop-target`` div, and it will be removed when they leave
