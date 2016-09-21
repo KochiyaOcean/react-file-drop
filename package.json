@@ -1,6 +1,6 @@
 {
     "name": "react-file-drop",
-    "author": "Kabir Sarin",
+    "author": "KochiyaOcean",
     "version": "0.1.8",
     "description": "",
     "main": "./FileDrop",
@@ -26,13 +26,13 @@
     ],
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/sarink/react-file-drop.git"
+        "url": "git+https://github.com/KochiyaOcean/react-file-drop.git"
     },
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/sarink/react-file-drop/issues"
+        "url": "https://github.com/KochiyaOcean/react-file-drop/issues"
     },
-    "homepage": "https://github.com/sarink/react-file-drop#readme",
+    "homepage": "https://github.com/KochiyaOcean/react-file-drop#readme",
     "dependencies": {
     },
     "peerDependencies": {
