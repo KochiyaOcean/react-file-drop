@@ -12,7 +12,7 @@
         factory(root.React);
     }
 }(this, function(React) {
-
+    var accepts = require('attr-accept')
     var FileDrop = React.createClass({
         displayName: "FileDrop",
 
@@ -22,6 +22,7 @@
             onDragLeave: React.PropTypes.func,
             dropEffect: React.PropTypes.oneOf(["copy", "move", "link", "none"]),
             targetAlwaysVisible: React.PropTypes.bool,
+            acceptType: React.PropTypes.string,
             frame: function (props, propName, componentName) {
                 var prop = props[propName];
                 if (prop == null) {
@@ -40,7 +41,8 @@
             return {
                 dropEffect: "copy",
                 frame: document,
-                targetAlwaysVisible: false
+                targetAlwaysVisible: false,
+                acceptType: ""
             };
         },
 
@@ -48,11 +50,19 @@
 
         resetDragging: function () {
             this._dragCount = 0;
-            this.setState({draggingOverFrame: false, draggingOverTarget: false});
+            this.setState({draggingOverFrame: false, draggingOverTargetAccept: false, draggingOverTargetReject: false});
+        },
+
+        _verifyFileType: function (files) {
+            var _this = this
+            return files.every(function(file) {
+                return accepts(file, _this.props.acceptType)
+            });
         },
 
         _handleDrop: function (event) {
             event.preventDefault();
+            if (this.state.draggingOverTargetReject) return;
             if (this.props.onDrop) {
                 var files = (event.dataTransfer) ? event.dataTransfer.files : (event.frame) ? event.frame.files : undefined;
                 this.props.onDrop(files, event);
@@ -67,15 +77,20 @@
             // set active drag state only when file is dragged into
             // (in mozilla when file is dragged effect is "uninitialized")
             var effectAllowed = event.dataTransfer.effectAllowed;
+            var dataTransferItems = event.dataTransfer && event.dataTransfer.items ? event.dataTransfer.items : [];
             if (effectAllowed === "all" || effectAllowed === "uninitialized") {
-                this.setState({draggingOverTarget: true});
+                if (this._verifyFileType(Array.prototype.slice.call(dataTransferItems))) {
+                    this.setState({draggingOverTargetAccept: true});
+                } else {
+                    this.setState({draggingOverTargetReject: true});
+                }
             }
 
             if (this.props.onDragOver) this.props.onDragOver(event);
         },
 
         _handleDragLeave: function (event) {
-            this.setState({draggingOverTarget: false});
+            this.setState({draggingOverTargetAccept: false, draggingOverTargetReject: false});
             if (this.props.onDragLeave) this.props.onDragLeave(event);
         },
 
@@ -95,7 +110,7 @@
 
         _handleFrameDrop: function(event) {
             this.resetDragging();
-            if (!this.state.draggingOverTarget) {
+            if (!this.state.draggingOverTargetAccept && !this.state.draggingOverTargetReject) {
                 if (this.props.onFrameDrop) this.props.onFrameDrop(event);
             }
         },
@@ -105,7 +120,8 @@
             var fileDropTargetClassName = "file-drop-target";
             if (this.props.targetAlwaysVisible || this.state.draggingOverFrame) {
                 if (this.state.draggingOverFrame) fileDropTargetClassName += " file-drop-dragging-over-frame";
-                if (this.state.draggingOverTarget) fileDropTargetClassName += " file-drop-dragging-over-target";
+                if (this.state.draggingOverTargetAccept) fileDropTargetClassName += " file-drop-dragging-over-target-accept";
+                if (this.state.draggingOverTargetReject) fileDropTargetClassName += " file-drop-dragging-over-target-reject";
                 fileDropTarget = (
                     React.createElement("div", {className: fileDropTargetClassName},
                         this.props.children
