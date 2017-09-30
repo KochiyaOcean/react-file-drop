@@ -2,19 +2,20 @@
     if (typeof exports !== "undefined") {
         var React = require("react");
         var PropTypes = require('prop-types')
+        var CreateReactClass = require('create-react-class')
         module.exports = factory(React, PropTypes);
     }
     else if (typeof define === "function" && define.amd) {
         define(["react", "prop-types"], function(React, PropTypes) {
-            return factory(React, PropTypes);
+            return factory(React, PropTypes, CreateReactClass);
         });
     }
     else {
-        factory(root.React, root.PropTypes);
+        factory(root.React, root.PropTypes, root.CreateReactClass);
     }
-}(this, function(React, PropTypes) {
+}(this, function(React, PropTypes, CreateReactClass) {
     var accepts = require('attr-accept')
-    var FileDrop = React.createClass({
+    var FileDrop = CreateReactClass({
         displayName: "FileDrop",
 
         propTypes: {
