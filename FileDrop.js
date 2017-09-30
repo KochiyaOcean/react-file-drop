@@ -3,10 +3,10 @@
         var React = require("react");
         var PropTypes = require('prop-types')
         var CreateReactClass = require('create-react-class')
-        module.exports = factory(React, PropTypes);
+        module.exports = factory(React, PropTypes, CreateReactClass);
     }
     else if (typeof define === "function" && define.amd) {
-        define(["react", "prop-types"], function(React, PropTypes) {
+        define(["react", "prop-types", "create-react-class"], function(React, PropTypes, CreateReactClass) {
             return factory(React, PropTypes, CreateReactClass);
         });
     }
